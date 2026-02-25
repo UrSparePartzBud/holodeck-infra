@@ -2,6 +2,8 @@
 - name: Configure Holodeck UPS Listeners
   hosts: cluster
   become: yes
+  vars_files:
+    - secrets.yml
   tasks:
     - name: Set NUT mode to netclient
       lineinfile:
@@ -12,7 +14,7 @@
     - name: Point nodes to Holodeck Unraid server
       lineinfile:
         path: /etc/nut/upsmon.conf
-        line: 'MONITOR ups@192.168.4.250 1 monuser GravyBoat25!! slave'
+        line: 'MONITOR ups@192.168.4.250 1 monuser {{ nut_password }} slave'
 
     - name: Restart and enable the NUT Client service
       service:
